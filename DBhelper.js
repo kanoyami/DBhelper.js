@@ -106,3 +106,17 @@ DBhelper.prototype.save = function(data,where,callback) {
 	});
 }
 
+
+DBhelper.prototype.delete = function(where,callback) {
+
+	this.connectHelper("DELETE FROM `"+this.table+"` WHERE "+where+" ;",function (err, results, fields) {
+		if(!err)
+			callback(true);
+		else{
+			console.log(err);
+			callback(false);
+		}
+		
+	});
+}
+
