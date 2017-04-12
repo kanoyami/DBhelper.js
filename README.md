@@ -56,4 +56,9 @@ console.log(result);
 });
 //@param map(array) not null 
 //callback返回的result是一个布尔变量，当插入成功为真
+
+dbtest.delete("id = 2",functoin(result){//delete删除操作
+console.log(result)}); 
+//@param where(string) not null as same as SQL
+//callback返回的result是一个布尔变量，当插入成功为真
 ```
