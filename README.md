@@ -25,7 +25,7 @@ var fs = require('fs');
 ```javascript
 var DBhelper = require('./DBhelper.js');
 
-var dbtest = new DBhelper("tablename");
+var dbtest = new DBhelper.DBhelper("tablename");
 //@param tablename 表名，用来定义这个DBhelper需要处理的表
 //或者 var dbtest = new DBhelper(“./dbconfig/config.json”,"tablename");
 //构造函数还可以接受一个字符串变量，用来定义config.json的位置
