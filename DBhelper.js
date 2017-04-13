@@ -4,16 +4,23 @@ var mysql = require('mysql');
 
 //@param config_file default is "./config.json"  json file's address
 //@param table which table wants to select
+
 function DBhelper (config_file,table) {
-	//default constructor
-	if(arguments.length<2){
+	switch(arguments.length)
+	{
+	case 1:
 		this.config_file = "./config.json";
 		this.table = arguments[0];
-	}
-	else{
-		this.config_file = config_file;
+		break;	
+	case 2:
+    	this.config_file =config_file;
 		this.table = table;
-	}	
+    	break;
+	default:
+		throw new Error("no param error");
+		break;
+	}
+	//default s	
 	this.config = JSON.parse(fs.readFileSync(this.config_file));
 };
 
@@ -29,37 +36,36 @@ var connection = mysql.createConnection({
 
 connection.query(sql,callback);
 connection.end();  
-};
+}
 
 //@param col(string) default is "*"
 //@param where(string) as same as SQL and the default is null
+
+
 DBhelper.prototype.selectWhere = function(callback,where,col){
-	if(arguments.length==2){
-		//console.log(arguments);
-		where = arguments[1];
-	this.connectHelper("SELECT * FROM "+this.table+" WHERE "+where,function (err, results, fields) {
-		if(!err){
-			callback(results);}
-		else
-			console.log(err);
+	switch(arguments.length){
+		case 2:
+			where = arguments[1];
+			this.connectHelper("SELECT * FROM "+this.table+" WHERE "+where,function (err, results, fields) {
+				if(!err){
+					callback(results);}
+				else
+					console.log(err);
+			});
+			break;
+		case 3:
+			this.connectHelper("SELECT "+ col +" FROM "+this.table+" WHERE "+where,function (err, results, fields) {
+				if(!err)
+					callback(results);
+				else
+					console.log(err);
+			});
+			break;
+		default:
+			throw new Error("param error");
+			break;
 
-	});
-	}else if(arguments.length==3){
-		this.connectHelper("SELECT "+ col +" FROM "+this.table+" WHERE "+where,function (err, results, fields) {
-		if(!err)
-			callback(results);
-		else
-			console.log(err);
-	});
-	}else{
-		this.connectHelper("SELECT * FROM "+this.table,function (err, results, fields) {
-		if(!err)
-			callback(results);
-		else
-			console.log(err);
-	});
 	}
-
 }
 //@param data the map which you want to insert into table
 DBhelper.prototype.add = function(data,callback) {
@@ -119,4 +125,9 @@ DBhelper.prototype.delete = function(where,callback) {
 		
 	});
 }
+
+module.exports.DBhelper = DBhelper;
+
+
+
 
